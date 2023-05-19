@@ -16,7 +16,7 @@ export const signup = async (req, res, next) => {
         const passwordCrypt = bcrypt.hashSync(req.body.password, salt);
         const newUser = new User({ ...req.body, password: passwordCrypt });
         await newUser.save();
-        res.status(200).send('User has been created!');
+        res.status(200).send('Kullanıcı başarı ile oluşturuldu!');
     } catch (err) {
         next(err);
         // next(createError(404, 'Not Found Sorry!'));
@@ -29,11 +29,11 @@ export const signin = async (req, res, next) => {
         //user'ı arıyoruz.
         const user = await User.findOne({ name: req.body.name });
         //user db'de yoksa middleware ile hata oluşturup dönüyoruz.
-        if (!user) return next(createError(404, 'User not found!'));
+        if (!user) return next(createError(404, 'Kullanıcı Bulunamadı!'));
         //kullanıcı varsa password'ünü alıp db'deki crypto'lanmış password ile karşılaştırıyoruz
         //eğer şifre yanlış ise hata oluşturup dönüyoruz.
         const passworValidation = await bcrypt.compare(req.body.password, user.password);
-        if (!passworValidation) return next(createError(400, 'Wrong password!'));
+        if (!passworValidation) return next(createError(400, 'Şifre Hatalı!'));
         //eğer şifre doğru ise jwt oluşturuyoruz.
         const token = jwt.sign({ id: user._id }, process.env.JWT);
         //token'ı response'daki cookie içerisine koyuyoruz.

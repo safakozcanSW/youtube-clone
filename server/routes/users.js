@@ -12,25 +12,25 @@ import { verifyToken } from '../verifyToken.js';
 
 const router = express.Router();
 
-//UPDATE USER + VERIFY TOKEN
+//UPDATE USER + VERIFY TOKEN(user güncellemek için giriş yapılmış olması gerekir)
 router.put('/:id', verifyToken, updateUser);
 
-//DELETE USER
-router.delete('/:id', deleteUser);
+//DELETE USER + VERIFY TOKEN(user silmek için giriş yapılmış olması gerekir)
+router.delete('/:id', verifyToken, deleteUser);
 
-//GET A USER
+//GET USER(user getirmek için giriş yapılmasına gerek yoktur)
 router.get('/find/:id', getUser);
 
-//SUBSCRIBE A USER
-router.put('/subscribe/:id', subscribe);
+//SUBSCRIBE + VERIFY TOKEN(user'a abone olmak için giriş yapılmış olması gerekir)
+router.put('/subscribe/:id', verifyToken, subscribe);
 
-//UNSUBSCRIBE A USER
-router.put('/unsubscribe/:id', unsubscribe);
+//UNSUBSCRIBE + VERIFY TOKEN(user aboneliğiden çıkmak için giriş yapılmış olması gerekir)
+router.put('/unsubscribe/:id', verifyToken, unsubscribe);
 
-//LIKE A VIDEO
-router.put('/like/:videoId', like);
+//LIKE VIDEO + VERIFY TOKEN(user'ın videosunu like'lamak için giriş yapılmış olması gerekir)
+router.put('/like/:videoId', verifyToken, like);
 
-//DISLIKE A VIDEO
-router.put('/dislike/:videoId', dislike);
+//DISLIKE VIDEO + VERIFY TOKEN(user'ın videosunu dislike'lamak için giriş yapılmış olması gerekir)
+router.put('/dislike/:videoId', verifyToken, dislike);
 
 export default router;

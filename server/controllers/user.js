@@ -51,10 +51,36 @@ export const getUser = async (req, res, next) => {
     }
 };
 export const subscribe = async (req, res, next) => {
-    res.json("It's Successfull!");
+    try {
+        //1)Kendi user hesabımızı buluruz.
+        //2)Abone olmak istediğimiz kanalın req.params.id'sini subscribedUsers'ımıza ekleriz.
+        await User.findById(req.user.id, {
+            $push: { subscribedUsers: req.params.id },
+        });
+        //3)Daha sonra abone olduğumuz kanalı bulup subscribesrs'ını 1 arttırırız.
+        await User.findByIdAndUpdate(req.params.id, {
+            $inc: { subscribers: 1 },
+        });
+        res.status(200).json('Abone olma işlemi başarılı!');
+    } catch (err) {
+        next(err);
+    }
 };
 export const unsubscribe = async (req, res, next) => {
-    res.json("It's Successfull!");
+    try {
+        //1)Kendi user hesabımızı buluruz.
+        //2)Abonelikten çıkmak olmak istediğimiz kanalın req.params.id'sini subscribedUsers'dan sileriz.
+        await User.findById(req.user.id, {
+            $pull: { subscribedUsers: req.params.id },
+        });
+        //3)Daha sonra abone olduğumuz kanalı bulup subscribesrs'ını 1 azaltırız.
+        await User.findByIdAndUpdate(req.params.id, {
+            $inc: { subscribers: -1 },
+        });
+        res.status(200).json('Abonelikten çıkma işlemi başarılı!');
+    } catch (err) {
+        next(err);
+    }
 };
 export const like = async (req, res, next) => {
     res.json("It's Successfull!");

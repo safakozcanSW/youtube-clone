@@ -54,7 +54,7 @@ export const subscribe = async (req, res, next) => {
     try {
         //1)Kendi user hesabımızı buluruz.
         //2)Abone olmak istediğimiz kanalın req.params.id'sini subscribedUsers'ımıza ekleriz.
-        await User.findById(req.user.id, {
+        await User.findByIdAndUpdate(req.user.id, {
             $push: { subscribedUsers: req.params.id },
         });
         //3)Daha sonra abone olduğumuz kanalı bulup subscribesrs'ını 1 arttırırız.
@@ -70,7 +70,7 @@ export const unsubscribe = async (req, res, next) => {
     try {
         //1)Kendi user hesabımızı buluruz.
         //2)Abonelikten çıkmak olmak istediğimiz kanalın req.params.id'sini subscribedUsers'dan sileriz.
-        await User.findById(req.user.id, {
+        await User.findByIdAndUpdate(req.user.id, {
             $pull: { subscribedUsers: req.params.id },
         });
         //3)Daha sonra abone olduğumuz kanalı bulup subscribesrs'ını 1 azaltırız.

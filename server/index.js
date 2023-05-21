@@ -48,6 +48,6 @@ app.use((err, req, res, next) => {
 
 //! MONGODB + APP
 app.listen(8800, () => {
-    console.log('Server Connected!');
+    console.log('Server :8800 Connected!');
     dbConnect();
 });

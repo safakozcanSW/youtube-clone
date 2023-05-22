@@ -6,6 +6,10 @@ import { useDispatch } from 'react-redux';
 //ACTIONS
 import { loginFailure, loginStart, loginSuccess } from '../redux/userSlice';
 
+//FIREBASE
+import { auth, provider } from '../firebase';
+import { signInWithPopup } from 'firebase/auth';
+
 const Container = styled.div`
     display: flex;
     flex-direction: column;
@@ -88,6 +92,24 @@ const SignIn = () => {
             dispatch(loginFailure());
         }
     };
+    const handleLoginWithGoogle = async (e) => {
+        dispatch(loginStart());
+        signInWithPopup(auth, provider)
+            .then((result) => {
+                axios
+                    .post('/auths/google', {
+                        name: result.user.displayName,
+                        email: result.user.email,
+                        img: result.user.photoURL,
+                    })
+                    .then((res) => {
+                        dispatch(loginSuccess(res.data));
+                    });
+            })
+            .catch((error) => {
+                dispatch(loginFailure());
+            });
+    };
 
     return (
         <Container>
@@ -105,6 +127,7 @@ const SignIn = () => {
                 />
                 <Button onClick={handleLogin}>Sign in</Button>
                 <Title>or</Title>
+                <Button onClick={handleLoginWithGoogle}>Sign in with Google</Button>
                 <Input
                     placeholder="username"
                     onChange={(e) => setUsername(e.target.value)}

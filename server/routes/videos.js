@@ -23,7 +23,7 @@ router.post('/', verifyToken, addVideo);
 router.put('/:id', verifyToken, updateVideo);
 //DELETE VIDEO + VERIFY TOKEN
 router.delete('/:id', verifyToken, deleteVideo);
-//SUBSCRIBE + VERIFY TOKEN
+//SUBSCRIBE VIDEOS + VERIFY TOKEN
 router.get('/subscribe', verifyToken, subscribe);
 //GET VIDEO
 router.get('/find/:id', getVideo);

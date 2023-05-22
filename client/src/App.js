@@ -40,7 +40,7 @@ function App() {
                                     />
                                     <Route
                                         path="subscriptions"
-                                        element={<Home type="sub" />}
+                                        element={<Home type="subscribe" />}
                                     />
                                     <Route path="signin" element={<SignIn />} />
                                     <Route path="video">

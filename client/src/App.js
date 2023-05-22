@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import Video from './pages/Video';
 import SignIn from './pages/SignIn';
+import Search from './pages/Search';
 
 const Container = styled.div`
     display: flex;
@@ -17,7 +18,7 @@ const Main = styled.div`
     background-color: ${({ theme }) => theme.bg};
 `;
 const Wrapper = styled.div`
-    padding: 22px 96px;
+    padding: 10px 96px;
 `;
 
 function App() {
@@ -42,6 +43,7 @@ function App() {
                                         path="subscriptions"
                                         element={<Home type="subscribe" />}
                                     />
+                                    <Route path="search" element={<Search />} />
                                     <Route path="signin" element={<SignIn />} />
                                     <Route path="video">
                                         <Route path=":id" element={<Video />} />

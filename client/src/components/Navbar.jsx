@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 //ACTIONS
 import { logOutFailure, logOutStart, logOutSuccess } from '../redux/userSlice';
@@ -44,6 +44,7 @@ const Search = styled.div`
     padding: 5px;
     border: 1px solid #ccc;
     border-radius: 3px;
+    color: ${({ theme }) => theme.text};
 `;
 
 const Input = styled.input`
@@ -81,11 +82,16 @@ const Avatar = styled.img`
 `;
 
 const Navbar = () => {
+    //Hooks
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+    //Store Data
     const { currentUser } = useSelector((state) => state.user);
-
+    //State
     const [open, setOpen] = useState(false);
+    const [q, setQ] = useState('');
 
+    //Methods
     const handleLogout = async () => {
         dispatch(logOutStart());
         try {
@@ -100,8 +106,11 @@ const Navbar = () => {
             <Container>
                 <Wrapper>
                     <Search>
-                        <Input placeholder="Search" />
-                        <SearchOutlinedIcon />
+                        <Input
+                            placeholder="Search"
+                            onChange={(e) => setQ(e.target.value)}
+                        />
+                        <SearchOutlinedIcon onClick={() => navigate(`/search?q=${q}`)} />
                     </Search>
                     {currentUser ? (
                         <>

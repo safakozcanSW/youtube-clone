@@ -1,13 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import axios from 'axios';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
+
+//ACTIONS
+import { logOutFailure, logOutStart, logOutSuccess } from '../redux/userSlice';
+
+//ICONS
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import VideoCallOutlinedIcon from '@mui/icons-material/VideoCallOutlined';
-import { Link } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import axios from 'axios';
-import { logOutFailure, logOutStart, logOutSuccess } from '../redux/userSlice';
 
+//COMPONENTS
+import Upload from './Upload';
+
+//STYLES
 const Container = styled.div`
     position: sticky;
     top: 0;
@@ -76,6 +84,8 @@ const Navbar = () => {
     const dispatch = useDispatch();
     const { currentUser } = useSelector((state) => state.user);
 
+    const [open, setOpen] = useState(false);
+
     const handleLogout = async () => {
         dispatch(logOutStart());
         try {
@@ -86,34 +96,41 @@ const Navbar = () => {
     };
 
     return (
-        <Container>
-            <Wrapper>
-                <Search>
-                    <Input placeholder="Search" />
-                    <SearchOutlinedIcon />
-                </Search>
-                {currentUser ? (
-                    <>
-                        <User>
-                            <VideoCallOutlinedIcon />
-                            <Avatar src={currentUser.img} />
-                            {currentUser.name}
-                        </User>
-                        <Button onClick={handleLogout} style={{ marginLeft: '16px' }}>
-                            <AccountCircleOutlinedIcon />
-                            SIGN OUT
-                        </Button>
-                    </>
-                ) : (
-                    <Link to="signin" style={{ textDecoration: 'none' }}>
-                        <Button>
-                            <AccountCircleOutlinedIcon />
-                            SIGN IN
-                        </Button>
-                    </Link>
-                )}
-            </Wrapper>
-        </Container>
+        <>
+            <Container>
+                <Wrapper>
+                    <Search>
+                        <Input placeholder="Search" />
+                        <SearchOutlinedIcon />
+                    </Search>
+                    {currentUser ? (
+                        <>
+                            <User>
+                                <VideoCallOutlinedIcon
+                                    onClick={() => {
+                                        setOpen(true);
+                                    }}
+                                />
+                                <Avatar src={currentUser.img} />
+                                {currentUser.name}
+                            </User>
+                            <Button onClick={handleLogout} style={{ marginLeft: '16px' }}>
+                                <AccountCircleOutlinedIcon />
+                                SIGN OUT
+                            </Button>
+                        </>
+                    ) : (
+                        <Link to="signin" style={{ textDecoration: 'none' }}>
+                            <Button>
+                                <AccountCircleOutlinedIcon />
+                                SIGN IN
+                            </Button>
+                        </Link>
+                    )}
+                </Wrapper>
+            </Container>
+            {open && <Upload setOpen={setOpen} />}
+        </>
     );
 };
 
